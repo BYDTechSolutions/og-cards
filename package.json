@@ -1,6 +1,6 @@
 {
   "name": "@bydtech/og-cards",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Draw Open Graph link-preview images with real Chrome: your fonts, your CSS, and live screenshots of your own pages.",
   "keywords": [
     "open-graph",

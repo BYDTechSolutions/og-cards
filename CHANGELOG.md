@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-16
+
+### Changed
+
+- Published from GitHub Actions through npm trusted publishing, with a
+  provenance attestation linking the package to this repository. No code changes.
+
 ## [0.1.0] - 2026-10-16
 
 ### Added
@@ -25,5 +32,6 @@ All notable changes to this project are documented here. The format follows
 - Overflow warnings for elements whose content is larger than their box.
 - PNG or JPEG output, any size and pixel density.
 
-[Unreleased]: https://github.com/BYDTechSolutions/og-cards/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/BYDTechSolutions/og-cards/releases/tag/v0.1.0
+[Unreleased]: https://github.com/BYDTechSolutions/og-cards/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/BYDTechSolutions/og-cards/releases/tag/v0.1.1
+[0.1.0]: https://github.com/BYDTechSolutions/og-cards/tree/2159d0874dea4ec178f3e35da0d7fcbcbc40508b
