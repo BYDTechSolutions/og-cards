@@ -179,10 +179,14 @@ export async function resolveConfig(config: OgCardsConfig<any>, dir: string = pr
   const quality = config.quality ?? 90;
   if (typeof quality !== 'number' || quality < 0 || quality > 100) throw new ConfigError('"quality" must be between 0 and 100');
   if (config.baseUrl !== undefined) {
+    let protocol = '';
     try {
-      new URL(config.baseUrl);
+      protocol = new URL(config.baseUrl).protocol;
     } catch {
-      throw new ConfigError(`"baseUrl" is not an absolute URL: ${config.baseUrl}`);
+      // reported below
+    }
+    if (!['http:', 'https:', 'file:'].includes(protocol)) {
+      throw new ConfigError(`"baseUrl" is not an absolute http(s) or file URL: ${config.baseUrl}`);
     }
   }
   const overflowSelector = config.overflowSelector ?? 'body';

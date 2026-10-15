@@ -54,7 +54,9 @@ export class CaptureError extends Error {
  * resolve against the template's directory. `.invalid` never resolves in DNS:
  * every request to it is answered by the route below or not at all. */
 const ORIGIN = 'https://og-cards.invalid';
-const PAGE_PREFIX = '/__og-cards__/';
+/* The card itself is served from the root, so `fonts/x.woff2` in its HTML
+ * resolves to `/fonts/x.woff2`, inside the template directory. */
+const PAGE_PATH = /^\/__og-cards-card-\d+\.html$/;
 
 /**
  * Draws every card in a config and writes the images. One browser is
@@ -150,7 +152,7 @@ async function openSurface(browser: Browser, config: ResolvedConfig): Promise<Su
   const surface: Surface = { context, page: await context.newPage(), html: '', warnings: [] };
   await context.route(`${ORIGIN}/**`, async (route) => {
     const path = decodeURIComponent(new URL(route.request().url()).pathname);
-    if (path.startsWith(PAGE_PREFIX)) {
+    if (PAGE_PATH.test(path)) {
       return route.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', body: surface.html });
     }
     const file = resolve(dir, `.${path}`);
@@ -199,7 +201,7 @@ async function drawCard(
   surface.html = html;
   surface.warnings = warnings;
   const { page } = surface;
-  await page.goto(`${ORIGIN}${PAGE_PREFIX}${++pageCounter}.html`, { waitUntil: 'load' });
+  await page.goto(`${ORIGIN}/__og-cards-card-${++pageCounter}.html`, { waitUntil: 'load' });
   // Fonts load lazily, on first use; images may still be decoding. Wait for
   // both, so a card is never drawn in a fallback font or with a blank image.
   await page.evaluate(async () => {
@@ -210,15 +212,16 @@ async function drawCard(
   if (config.overflowSelector !== false) {
     const found = await page.evaluate((selector: string) => {
       const out: string[] = [];
-      const root = document.documentElement;
-      if (root.scrollWidth > window.innerWidth + 1 || root.scrollHeight > window.innerHeight + 1) {
-        out.push(`the page is ${root.scrollWidth}x${root.scrollHeight}, larger than the card`);
-      }
       for (const el of Array.from(document.querySelectorAll(selector))) {
         if (el.scrollHeight > el.clientHeight + 1 || el.scrollWidth > el.clientWidth + 1) {
           const label = el.tagName.toLowerCase() + (el.id ? `#${el.id}` : '') + Array.from(el.classList, (c) => `.${c}`).join('');
           out.push(`${label} holds ${el.scrollWidth}x${el.scrollHeight} of content in a ${el.clientWidth}x${el.clientHeight} box`);
         }
+      }
+      // The page as a whole, when no element above already explains it.
+      const root = document.documentElement;
+      if (out.length === 0 && (root.scrollWidth > window.innerWidth + 1 || root.scrollHeight > window.innerHeight + 1)) {
+        out.push(`the page is ${root.scrollWidth}x${root.scrollHeight}, larger than the card`);
       }
       return out;
     }, config.overflowSelector);
