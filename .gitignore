@@ -1,0 +1,8 @@
+node_modules/
+dist/
+coverage/
+*.tgz
+.DS_Store
+# Generated cards from the examples and tests
+examples/*/og/
+test/.output/

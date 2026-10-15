@@ -1,0 +1,64 @@
+{
+  "name": "@bydtech/og-cards",
+  "version": "0.1.0",
+  "description": "Draw Open Graph link-preview images with real Chrome: your fonts, your CSS, and live screenshots of your own pages.",
+  "keywords": [
+    "open-graph",
+    "og-image",
+    "social-card",
+    "link-preview",
+    "twitter-card",
+    "playwright",
+    "chrome",
+    "screenshot",
+    "static-site",
+    "cli"
+  ],
+  "homepage": "https://github.com/BYDTechSolutions/og-cards#readme",
+  "bugs": {
+    "url": "https://github.com/BYDTechSolutions/og-cards/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BYDTechSolutions/og-cards.git"
+  },
+  "license": "MIT",
+  "author": "BYD Tech <sales.bydtech@gmail.com> (https://bydtech.in)",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "og-cards": "./dist/cli.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "playwright-core": "^1.63.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "tsup": "^8.5.1",
+    "typescript": "~5.9.3",
+    "vitest": "~4.0.18"
+  }
+}
